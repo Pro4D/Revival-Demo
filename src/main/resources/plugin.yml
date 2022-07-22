@@ -1,0 +1,7 @@
+name: RevivalDemo
+version: '${project.version}'
+main: com.pro4d.revivaldemo.RevivalDemo
+authors: [ Pro4D ]
+
+commands:
+  revivereload:

@@ -2,20 +2,20 @@ package com.pro4d.revivaldemo;
 
 import com.pro4d.revivaldemo.command.RevivalReload;
 import com.pro4d.revivaldemo.listener.RevivalListener;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
 
 public final class RevivalDemo extends JavaPlugin {
 
-    private List<UUID> armorStands;
-    private List<UUID> downed;
+    private Map<UUID, UUID> mounted;
     private Map<UUID, Integer> logoutMap;
+
+    private List<UUID> gracePeriod;
+
     private Material reviveItem = Material.GOLDEN_APPLE;
-    private int downedTime = 60;
+    private int downedTime = 40;
 
     //private ProConfig config;
 
@@ -23,8 +23,9 @@ public final class RevivalDemo extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         logoutMap = new HashMap<>();
-        armorStands = new ArrayList<>();
-        downed = new ArrayList<>();
+        mounted = new HashMap<>();
+
+        gracePeriod = new ArrayList<>();
 
         new RevivalReload(this);
         new RevivalListener(this);
@@ -35,11 +36,6 @@ public final class RevivalDemo extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        for(UUID u : armorStands) {
-            Entity e = Bukkit.getEntity(u);
-            if(e == null) continue;
-            e.remove();
-        }
 
     }
 
@@ -47,4 +43,29 @@ public final class RevivalDemo extends JavaPlugin {
 
     }
 
+    public Map<UUID, UUID> getMounted() {
+        return mounted;
+    }
+
+    public Map<UUID, Integer> getLogoutMap() {
+        return logoutMap;
+    }
+
+    public List<UUID> getGracePeriod() {return gracePeriod;}
+
+    public Material getReviveItem() {
+        return reviveItem;
+    }
+
+    public int getDownedTime() {
+        return downedTime;
+    }
+
+    public void setReviveItem(Material reviveItem) {
+        this.reviveItem = reviveItem;
+    }
+
+    public void setDownedTime(int downedTime) {
+        this.downedTime = downedTime;
+    }
 }

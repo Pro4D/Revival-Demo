@@ -1,10 +1,12 @@
 package com.pro4d.revivaldemo.command;
 
 import com.pro4d.revivaldemo.RevivalDemo;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
 
 public class RevivalReload implements CommandExecutor {
 
@@ -19,8 +21,7 @@ public class RevivalReload implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         plugin.loadConfig();
-
-        //send message to confirm reload
+        if(sender instanceof Player) sender.sendMessage(ChatColor.GREEN + "Plugin config reloaded!");
         return false;
     }
 }

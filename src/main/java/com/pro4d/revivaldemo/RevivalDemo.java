@@ -2,7 +2,9 @@ package com.pro4d.revivaldemo;
 
 import com.pro4d.revivaldemo.command.RevivalReload;
 import com.pro4d.revivaldemo.listener.RevivalListener;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
@@ -14,10 +16,8 @@ public final class RevivalDemo extends JavaPlugin {
 
     private List<UUID> gracePeriod;
 
-    private Material reviveItem = Material.GOLDEN_APPLE;
+    private Material revivalItemMaterial = Material.GOLDEN_APPLE;
     private int downedTime = 40;
-
-    //private ProConfig config;
 
     @Override
     public void onEnable() {
@@ -40,7 +40,28 @@ public final class RevivalDemo extends JavaPlugin {
     }
 
     public void loadConfig() {
+        ProConfig proConfig = new ProConfig("config", this);
+        FileConfiguration config = proConfig.getConfig();
 
+        config.addDefault("Downed-Time", 60);
+        config.addDefault("Revival-Item", Material.GOLDEN_APPLE.name());
+
+        downedTime = config.getInt("Downed-Time");
+        String revivalItem = config.getString("Revival-Item");
+        assert revivalItem != null;
+
+        Material mat = findMat(revivalItem);
+        if(mat != null) {
+            revivalItemMaterial = mat;
+        } else revivalItemMaterial = Material.GOLDEN_APPLE;
+
+    }
+
+    public Material findMat(String name) {
+        for(Material mat : Material.values()) {
+            if(mat.name().equalsIgnoreCase(name)) return mat;
+        }
+        return null;
     }
 
     public Map<UUID, UUID> getMounted() {
@@ -53,19 +74,12 @@ public final class RevivalDemo extends JavaPlugin {
 
     public List<UUID> getGracePeriod() {return gracePeriod;}
 
-    public Material getReviveItem() {
-        return reviveItem;
+    public Material getRevivalItemMaterial() {
+        return revivalItemMaterial;
     }
 
     public int getDownedTime() {
         return downedTime;
     }
 
-    public void setReviveItem(Material reviveItem) {
-        this.reviveItem = reviveItem;
-    }
-
-    public void setDownedTime(int downedTime) {
-        this.downedTime = downedTime;
-    }
-}
+ }

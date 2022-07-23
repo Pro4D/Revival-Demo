@@ -60,13 +60,12 @@ public class RevivalListener implements Listener {
         if(!plugin.getMounted().containsKey(event.getRightClicked().getUniqueId())) return;
 
         Player player = event.getPlayer();
-        if(player.getInventory().getItemInMainHand().getType() != plugin.getReviveItem()) return;
+        if(player.getInventory().getItemInMainHand().getType() != plugin.getRevivalItemMaterial()) return;
 
         Player clicked = (Player) event.getRightClicked();
 
         Entity pig = Bukkit.getEntity(plugin.getMounted().get(clicked.getUniqueId()));
 
-        //revive
         //clicked.getWorld().playSound(clicked.getLocation(), Sound.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.MASTER, 5, 1);
         clicked.getWorld().playSound(clicked.getLocation(), Sound.ITEM_TOTEM_USE, SoundCategory.MASTER, 5, 1);
 
@@ -74,9 +73,8 @@ public class RevivalListener implements Listener {
         clicked.setGameMode(GameMode.SURVIVAL);
 
         if(pig == null) return;
-        //clear saddle drop
+        pig.removePassenger(clicked);
         pig.remove();
-
     }
 
     @EventHandler
@@ -84,7 +82,6 @@ public class RevivalListener implements Listener {
         if(!plugin.getMounted().containsKey(event.getPlayer().getUniqueId())) return;
         Player player = event.getPlayer();
         downPlayer(player, plugin.getLogoutMap().get(player.getUniqueId()), true);
-
     }
 
     @EventHandler
@@ -106,9 +103,11 @@ public class RevivalListener implements Listener {
         pig.setVisualFire(false);
         pig.addPassenger(player);
         pig.setInvisible(true);
+        pig.setSilent(true);
 
         player.setInvulnerable(true);
         player.setFireTicks(0);
+        player.setGameMode(GameMode.ADVENTURE);
 
         plugin.getMounted().put(player.getUniqueId(), pig.getUniqueId());
 

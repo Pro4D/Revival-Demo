@@ -5,6 +5,9 @@ import com.pro4d.revivaldemo.listener.RevivalListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Pig;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
@@ -21,7 +24,6 @@ public final class RevivalDemo extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
         logoutMap = new HashMap<>();
         mounted = new HashMap<>();
 
@@ -35,8 +37,22 @@ public final class RevivalDemo extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        getServer().getScheduler().cancelTasks(this);
+        for (UUID u : mounted.keySet()) {
+            Entity p = Bukkit.getEntity(u);
+            if(p == null) continue;
+            if(!(p instanceof Player)) continue;
+            Player player = (Player) p;
 
+            player.setInvulnerable(false);
+            player.setHealth(0);
+
+            Entity r = Bukkit.getEntity(mounted.get(u));
+            if(r == null) continue;
+            if(!(r instanceof Pig)) continue;
+            r.remove();
+        }
+        mounted.clear();
     }
 
     public void loadConfig() {
@@ -54,7 +70,6 @@ public final class RevivalDemo extends JavaPlugin {
         if(mat != null) {
             revivalItemMaterial = mat;
         } else revivalItemMaterial = Material.GOLDEN_APPLE;
-
     }
 
     public Material findMat(String name) {

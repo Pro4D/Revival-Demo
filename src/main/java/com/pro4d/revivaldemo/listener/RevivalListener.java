@@ -105,6 +105,7 @@ public class RevivalListener implements Listener {
         pig.setInvisible(true);
         pig.setSilent(true);
 
+        player.setHealth(.5);
         player.setInvulnerable(true);
         player.setFireTicks(0);
         player.setGameMode(GameMode.ADVENTURE);
@@ -117,6 +118,8 @@ public class RevivalListener implements Listener {
             @Override
             public void run() {
                 if(!player.isOnline()) cancel();
+
+                player.setFireTicks(0);
 
                 if(!plugin.getLogoutMap().containsKey(player.getUniqueId())) {
                     plugin.getLogoutMap().put(player.getUniqueId(), time++);

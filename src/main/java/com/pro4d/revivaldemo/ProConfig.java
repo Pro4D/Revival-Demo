@@ -20,8 +20,6 @@ public class ProConfig {
 
     public FileConfiguration getConfig() {return config;}
 
-//    public void loadConfig() {config = YamlConfiguration.loadConfiguration(file);}
-
     private FileConfiguration createConfig(String name, RevivalDemo plugin) {
         String configName = name + ".yml";
 
@@ -34,7 +32,6 @@ public class ProConfig {
             try {
                 file = Files.createFile(configPath).toFile();
             } catch (IOException e) {
-//                plugin.getLogger().log(Level.CONFIG, "Could not find '" + name + ".yml', creating one now...");
                 throw new RuntimeException(e);
             }
             plugin.saveResource(configName, true);

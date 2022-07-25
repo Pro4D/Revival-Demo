@@ -39,7 +39,6 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\gamin\Desktop\Server\plugins\PlayerRevival.jar</outputFile>
                         </configuration>
                     </execution>
                 </executions>
